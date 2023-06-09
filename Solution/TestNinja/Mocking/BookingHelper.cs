@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace TestNinja.Mocking
+﻿namespace TestNinja.Mocking
 {
     public static class BookingHelper
     {
