@@ -50,5 +50,19 @@ namespace TestNinja.UnitTests
             // assert
             Assert.That(max, Is.EqualTo(second));
         }
+
+        [Test]
+        public void Max_ArgsEqual_ReturnSameArg()
+        {
+            // arrange 
+            var math = new TestNinja.Fundamentals.Math();
+            var arg = 1;
+
+            // act
+            var max = math.Max(arg, arg);
+
+            // assert
+            Assert.That(max, Is.EqualTo(arg));
+        }
     }
 }
