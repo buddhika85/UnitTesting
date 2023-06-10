@@ -20,5 +20,35 @@ namespace TestNinja.UnitTests
             // assert
             Assert.That(result, Is.EqualTo(sum));
         }
+
+        [Test]
+        public void Max_FirstIsMax_ReturnFirst()
+        {
+            // arrange 
+            var math = new TestNinja.Fundamentals.Math();
+            var first = 1;
+            var second = 0;
+
+            // act
+            var max = math.Max(first, second);
+
+            // assert
+            Assert.That(max, Is.EqualTo(first));
+        }
+
+        [Test]
+        public void Max_SecondIsMax_ReturnSecond()
+        {
+            // arrange 
+            var math = new TestNinja.Fundamentals.Math();
+            var first = 1;
+            var second = 2;
+
+            // act
+            var max = math.Max(first, second);
+
+            // assert
+            Assert.That(max, Is.EqualTo(second));
+        }
     }
 }
