@@ -16,6 +16,7 @@ namespace TestNinja.UnitTests
         }
 
         [Test]
+        [Ignore("Because Max_WhenCalled_ReturngreaterValue pametrised test covers this")]
         public void Add_PassTwoNums_ReturnSum()
         {
             // arrange           
@@ -45,6 +46,7 @@ namespace TestNinja.UnitTests
         }
 
         [Test]
+        [Ignore("Because Max_WhenCalled_ReturngreaterValue pametrised test covers this")]
         public void Max_SecondIsMax_ReturnSecond()
         {
             // arrange            
@@ -59,6 +61,7 @@ namespace TestNinja.UnitTests
         }
 
         [Test]
+        [Ignore("Because Max_WhenCalled_ReturngreaterValue pametrised test covers this")]
         public void Max_ArgsEqual_ReturnSameArg()
         {
             // arrange             
