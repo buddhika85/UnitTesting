@@ -14,6 +14,7 @@ namespace TestNinja.UnitTests
             _htmlFormatter = new HtmlFormatter();
         }
 
+        [Test]
         [TestCase("Hello")]
         [TestCase("World")]
         [TestCase("Hello World")]

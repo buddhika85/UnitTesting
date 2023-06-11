@@ -16,7 +16,6 @@ namespace TestNinja.UnitTests
         }
 
         [Test]
-        [Ignore("Because Max_WhenCalled_ReturngreaterValue pametrised test covers this")]
         public void Add_PassTwoNums_ReturnSum()
         {
             // arrange           
@@ -32,6 +31,7 @@ namespace TestNinja.UnitTests
         }
 
         [Test]
+        [Ignore("Because Max_WhenCalled_ReturngreaterValue parameterized test covers this")]
         public void Max_FirstIsMax_ReturnFirst()
         {
             // arrange            
@@ -46,7 +46,7 @@ namespace TestNinja.UnitTests
         }
 
         [Test]
-        [Ignore("Because Max_WhenCalled_ReturngreaterValue pametrised test covers this")]
+        [Ignore("Because Max_WhenCalled_ReturngreaterValue parameterized test covers this")]
         public void Max_SecondIsMax_ReturnSecond()
         {
             // arrange            
@@ -61,7 +61,7 @@ namespace TestNinja.UnitTests
         }
 
         [Test]
-        [Ignore("Because Max_WhenCalled_ReturngreaterValue pametrised test covers this")]
+        [Ignore("Because Max_WhenCalled_ReturngreaterValue parameterized test covers this")]
         public void Max_ArgsEqual_ReturnSameArg()
         {
             // arrange             
@@ -85,6 +85,23 @@ namespace TestNinja.UnitTests
 
             // assert
             Assert.That(max, Is.EqualTo(expected));
+        }
+
+        [Test]
+        [TestCase(2, new int[] { 1 })]
+        [TestCase(3, new int[] { 1, 3 })]
+        [TestCase(0, new int[] { })]
+        [TestCase(-1, new int[] { })]
+        public void GetOddNumbers_WhenCalledWithLimit_ReturnOnlyOdd(int limit, int[] expected)
+        {
+            // arrange
+            // act
+            var actual = _math.GetOddNumbers(limit);
+
+            // assert
+            CollectionAssert.AreEqual(expected, actual);
+            Assert.That(actual, Is.Ordered);
+            Assert.That(actual, Is.Unique);
         }
     }
 }
