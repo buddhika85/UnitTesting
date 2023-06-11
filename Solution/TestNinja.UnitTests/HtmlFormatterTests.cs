@@ -26,7 +26,13 @@ namespace TestNinja.UnitTests
             var actual = _htmlFormatter.FormatAsBold(input);
 
             // assert
+            // more specific
             Assert.That(actual, Is.EqualTo(expected));
+
+            // more generic
+            Assert.That(actual, Does.StartWith("<strong>"));
+            Assert.That(actual, Does.EndWith("</strong>"));
+            Assert.That(actual, Does.Contain(input));
         }
     }
 }
