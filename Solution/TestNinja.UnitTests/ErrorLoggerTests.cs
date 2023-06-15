@@ -30,10 +30,22 @@ namespace TestNinja.UnitTests
         [TestCase(null)]
         [TestCase("")]
         [TestCase("  ")]
-        public void Log_WhenCalledWithNullOrEmpty_ChangeLastError(string error)
+        public void Log_WhenCalledWithNullOrEmpty_ThrowArgumentNullException(string error)
         {
             Assert.That(() => _errorLogger.Log(error), Throws.ArgumentNullException);
         }
 
+        [Test]
+        public void Log_ValidError_RaiseErrorLoggedEvent()
+        {
+            // arrange
+            var id = Guid.Empty;
+
+            // act
+            _errorLogger.ErrorLogged += (sender, args) => { id = args; };
+            _errorLogger.Log("error");
+
+            Assert.That(id, Is.Not.EqualTo(Guid.Empty));
+        }
     }
 }
