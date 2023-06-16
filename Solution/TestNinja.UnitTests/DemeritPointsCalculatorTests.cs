@@ -22,8 +22,8 @@ namespace TestNinja.UnitTests
             // was done in setup
 
             // act & assert
-            //Assert.That(() => _demeritPointsCalculator.CalculateDemeritPoints(speed),
-            //        Throws.);
+            Assert.That(() => _demeritPointsCalculator.CalculateDemeritPoints(speed),
+                    Throws.Exception.TypeOf<ArgumentOutOfRangeException>());
             Assert.Throws<ArgumentOutOfRangeException>(() => _demeritPointsCalculator.CalculateDemeritPoints(speed));
         }
 
