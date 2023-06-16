@@ -42,12 +42,15 @@ namespace TestNinja.UnitTests
         }
 
         [Test]
-        [TestCase(66, 65, 5)]   // 1 greater than speed limit but less than max speed
-        [TestCase(299, 65, 5)]  // 1 less than max speed but greater than speed limit
-        public void CalculateDemeritPoints_SpeedGreaterToSpeedLimit_ReturnsZero(int speed, int speedLimit, int kmPerDemeritPoint)
+        [TestCase(66, 65, 5, 0)]   // 1 greater than speed limit but less than max speed - integer devision result 0
+        [TestCase(70, 65, 5, 1)]   // 1 greater than speed limit but less than max speed - integer devision result 1
+        [TestCase(71, 65, 5, 1)]   // 1 greater than speed limit but less than max speed - integer devision result 1
+        [TestCase(75, 65, 5, 2)]   // 1 greater than speed limit but less than max speed - integer devision result 46
+        [TestCase(299, 65, 5, 46)]  // 1 less than max speed but greater than speed limit
+        public void CalculateDemeritPoints_SpeedGreaterToSpeedLimit_ReturnsZero(int speed, int speedLimit, int kmPerDemeritPoint, int expected)
         {
             // arrange
-            var expected = (speed - speedLimit) / kmPerDemeritPoint;
+            //var expected = (speed - speedLimit) / kmPerDemeritPoint;
 
             // act
             var actual = _demeritPointsCalculator.CalculateDemeritPoints(speed);
