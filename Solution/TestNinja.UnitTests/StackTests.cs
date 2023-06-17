@@ -12,6 +12,18 @@
         }
 
         [Test]
+        public void Count_EmptyStack_CountZero()
+        {
+            // arrange
+            // act
+            // was done in setup
+
+            // assert
+            Assert.That(_stack.Count, Is.EqualTo(0));
+        }
+
+
+        [Test]
         public void Push_PassNull_ThrowsArgumentNullExceptionCountZero()
         {
             // arrange
