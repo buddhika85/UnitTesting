@@ -85,14 +85,15 @@
             // arrange
             var inputObj = new object();
             _stack.Push(inputObj);
-            var count = _stack.Count;
+            var prevCount = _stack.Count;
 
             // act
             var peekedObj = _stack.Peek();
+            var newCount = _stack.Count;
 
             // assert
             Assert.That(peekedObj, Is.SameAs(inputObj));
-            Assert.That(count, Is.EqualTo(count));
+            Assert.That(newCount, Is.EqualTo(prevCount));
         }
     }
 }
