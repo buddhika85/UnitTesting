@@ -65,7 +65,7 @@
 
 
         [Test]
-        public void Pop_CountOne_ReturnsIndexZeroObjCountZero()
+        public void Pop_CountOne_ReturnsTopObjCountZero()
         {
             // arrange
             var inputObj = new object();
@@ -77,6 +77,24 @@
             // assert
             Assert.That(poppedObj, Is.SameAs(inputObj));
             Assert.That(_stack.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void Pop_CountMoreThanOne_ReturnsTopObjDecreaseCount()
+        {
+            // arrange
+            _stack.Push(1);
+            _stack.Push(2);
+            var inputObj = new object();
+            _stack.Push(inputObj);
+            var prevCount = _stack.Count;
+
+            // act
+            var poppedObj = _stack.Pop();
+
+            // assert
+            Assert.That(poppedObj, Is.SameAs(inputObj));
+            Assert.That(_stack.Count, Is.EqualTo(--prevCount));
         }
 
         [Test]
@@ -95,6 +113,8 @@
         public void Peek_WhenCountNotZero_ReturnTopCountDoNotChange()
         {
             // arrange
+            _stack.Push(1);
+            _stack.Push(2);
             var inputObj = new object();
             _stack.Push(inputObj);
             var prevCount = _stack.Count;
