@@ -66,5 +66,33 @@
             Assert.That(poppedObj, Is.SameAs(inputObj));
             Assert.That(_stack.Count, Is.EqualTo(0));
         }
+
+        [Test]
+        public void Peek_WhenCountZero_ThrowsInvalidOperationException()
+        {
+            // arrange
+            // was done in setup
+
+            // act
+            // assert
+            Assert.Throws<InvalidOperationException>(() => _stack.Pop());
+        }
+
+
+        [Test]
+        public void Peek_WhenCountNotZero_ReturnTopCountDoNotChange()
+        {
+            // arrange
+            var inputObj = new object();
+            _stack.Push(inputObj);
+            var count = _stack.Count;
+
+            // act
+            var peekedObj = _stack.Peek();
+
+            // assert
+            Assert.That(peekedObj, Is.SameAs(inputObj));
+            Assert.That(count, Is.EqualTo(count));
+        }
     }
 }
