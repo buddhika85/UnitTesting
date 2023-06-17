@@ -39,5 +39,32 @@
             // assert
             Assert.That(_stack.Count, Is.EqualTo(++prevSize));
         }
+
+        [Test]
+        public void Pop_CountZero_ThrowsInvalidOperationException()
+        {
+            // arrange
+            // was done in setup
+
+
+            // act and assert
+            Assert.Throws<InvalidOperationException>(() => _stack.Pop());
+        }
+
+
+        [Test]
+        public void Pop_CountOne_ReturnsIndexZeroObjCountZero()
+        {
+            // arrange
+            var inputObj = new object();
+            _stack.Push(inputObj);
+
+            // act
+            var poppedObj = _stack.Pop();
+
+            // assert
+            Assert.That(poppedObj, Is.SameAs(inputObj));
+            Assert.That(_stack.Count, Is.EqualTo(0));
+        }
     }
 }
