@@ -27,5 +27,18 @@ namespace TestNinja.UnitTests.Mocking
             // assert
             Assert.That(error, Is.EqualTo(errorMessage));
         }
+
+        [Test]
+        public void ReadVideoTitle_WhenVideosIsNotNull_ReturnsTitleOfFirst()
+        {
+            // arrange 
+            _videoService = new VideoService(new FakeFileReader(isEmpty: false));
+
+            // act
+            var title = _videoService.ReadVideoTitle();
+
+            // assert
+            Assert.That(title, Is.EqualTo("abc"));
+        }
     }
 }
