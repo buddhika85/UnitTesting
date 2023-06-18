@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace TestNinja.Mocking
+﻿namespace TestNinja.Mocking
 {
     public interface IFileReader
     {
