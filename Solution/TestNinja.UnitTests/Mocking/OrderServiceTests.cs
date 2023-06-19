@@ -22,5 +22,22 @@ namespace TestNinja.UnitTests.Mocking
             // assert
             Assert.That(actualId, Is.EqualTo(1));
         }
+
+        [Test]
+        public void PlaceOrder_PassOrder_SameOrderReceived()
+        {
+            // arrange
+            var mockOrder = new Mock<Order>();
+            var mackOrderObject = mockOrder.Object;
+            var mockStorage = new Mock<IStorage>();
+            var orderService = new OrderService(mockStorage.Object);
+
+            // act
+            orderService.PlaceOrder(mackOrderObject);
+
+            // assert
+            // checking if same order object was received to Store method of Storage
+            mockStorage.Verify(x => x.Store(mackOrderObject));
+        }
     }
 }
