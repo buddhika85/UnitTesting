@@ -47,18 +47,32 @@ namespace TestNinja.UnitTests.Mocking
         #region WITH_MOCKS
         [Test]
         [TestCase("Error parsing the video.")]
-        public void ReadVideoTitle_WihtMoqWhenVideosNull_ReturnErrorMessage(string errorMessage)
+        public void ReadVideoTitle_WithMoqWhenVideosNull_ReturnErrorMessage(string errorMessage)
         {
             // arrange 
-            var fileReaderMock = new Mock<IFileReader>();
-            fileReaderMock.Setup(x => x.Read("video.txt")).Returns("");
-            _videoService = new VideoService(fileReaderMock.Object);
+            var mockFileReader = new Mock<IFileReader>();
+            mockFileReader.Setup(x => x.Read("video.txt")).Returns("");
+            _videoService = new VideoService(mockFileReader.Object);
 
             // act
             var error = _videoService.ReadVideoTitle();
 
             // assert
             Assert.That(error, Is.EqualTo(errorMessage));
+        }
+
+        public void ReadVideoTitle_WithMoqWhenVideosIsNotNull_ReturnsTitle()
+        {
+            // arrange 
+            var mockFileReader = new Mock<IFileReader>();
+            mockFileReader.Setup(x => x.Read("video.txt")).Returns("{id: 1, Title: \"abc\", IsProcessed: true}");
+            _videoService = new VideoService(new FakeFileReader(isEmpty: false));
+
+            // act
+            var title = _videoService.ReadVideoTitle();
+
+            // assert
+            Assert.That(title, Is.EqualTo("abc"));
         }
 
         #endregion WITH_MOCKS
