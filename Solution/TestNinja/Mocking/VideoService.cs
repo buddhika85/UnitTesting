@@ -5,12 +5,18 @@ namespace TestNinja.Mocking
 {
     public class VideoService
     {
-        private IFileReader _fileReader;
+        private readonly IFileReader? _fileReader;
+        private readonly IVideoRepository? _videoRepository;
 
-        // constructor depedecy injection
-        public VideoService(IFileReader fileReader = null)
+        // constructor dependency injection
+        public VideoService(IFileReader fileReader)
         {
             _fileReader = fileReader ?? new FileReader();
+        }
+
+        public VideoService(IVideoRepository videoRepository)
+        {
+            _videoRepository = videoRepository;
         }
 
         public string ReadVideoTitle()
@@ -26,19 +32,14 @@ namespace TestNinja.Mocking
         public string GetUnprocessedVideosAsCsv()
         {
             var videoIds = new List<int>();
+            var videos = _videoRepository?.GetUnprocessedVideos();
 
-            using (var context = new VideoContext())
-            {
-                var videos =
-                    (from video in context.Videos
-                     where !video.IsProcessed
-                     select video).ToList();
-
+            if (videos != null)
                 foreach (var v in videos)
                     videoIds.Add(v.Id);
 
-                return String.Join(",", videoIds);
-            }
+            return string.Join(",", videoIds);
+
         }
     }
 
