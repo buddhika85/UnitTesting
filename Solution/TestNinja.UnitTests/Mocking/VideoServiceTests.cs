@@ -78,10 +78,12 @@ namespace TestNinja.UnitTests.Mocking
         #endregion WITH_MOCKS
 
         [Test]
-        public void GetUnprocessedVideosAsCsv_WhenNoVideos_ReturnEmptyString()
+        public void GetUnprocessedVideosAsCsv_WhenNoUnprocessedVideos_ReturnsEmptyString()
         {
             // arrange
             var mockVideoRepository = new Mock<IVideoRepository>();
+            mockVideoRepository.Setup(x => x.GetUnprocessedVideos())
+                .Returns(new List<Video>());
             _videoService = new VideoService(mockVideoRepository.Object);
 
             // act
@@ -92,33 +94,21 @@ namespace TestNinja.UnitTests.Mocking
         }
 
         [Test]
-        public void GetUnprocessedVideosAsCsv_WhenVideosButAllProcessed_ReturnEmptyString()
+        public void GetUnprocessedVideosAsCsv_WhenThereAreMultipleUnprocessed_ReturnsTheirIds()
         {
             // arrange
+            var mockVideoRepository = new Mock<IVideoRepository>();
+            mockVideoRepository.Setup(x => x.GetUnprocessedVideos())
+                .Returns(new List<Video> { new() { Id = 1 }, new() { Id = 2 } });
+            _videoService = new VideoService(mockVideoRepository.Object);
 
             // act
+            var actual = _videoService.GetUnprocessedVideosAsCsv();
 
             // assert
+            Assert.That(actual, Is.EqualTo("1,2"));
         }
 
-        [Test]
-        public void GetUnprocessedVideosAsCsv_WhenVideosAllUnProcessed_ReturnAllIdsString()
-        {
-            // arrange
 
-            // act
-
-            // assert
-        }
-
-        [Test]
-        public void GetUnprocessedVideosAsCsv_WhenVideosFewUnProcessed_ReturnThatFewIdsString()
-        {
-            // arrange
-
-            // act
-
-            // assert
-        }
     }
 }
