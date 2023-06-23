@@ -27,7 +27,7 @@ namespace TestNinja.UnitTests.Mocking
             var actual = _installerHelper.DownloadInstaller("", "");
 
             // assert
-            Assert.That(actual, Is.EqualTo(true));
+            Assert.That(actual, Is.True);
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace TestNinja.UnitTests.Mocking
             var actual = _installerHelper.DownloadInstaller(customerName, installerName);
 
             // assert
-            Assert.That(actual, Is.EqualTo(false));
+            Assert.That(actual, Is.False);
         }
 
 
@@ -66,7 +66,7 @@ namespace TestNinja.UnitTests.Mocking
 
             _fileDownloaderMock = new Mock<IFileDownloader>();
 
-            //'It' is class from Moq - It.IsAny<string>() - says can be any string
+            //'It' is class from Moq - It.IsAny<string>() - says it can be any string
             _fileDownloaderMock.Setup(x =>
                 x.DownloadFile(It.IsAny<string>(), It.IsAny<string>())).Throws<WebException>();
             _installerHelper = new InstallerHelper(_fileDownloaderMock.Object);
@@ -75,7 +75,7 @@ namespace TestNinja.UnitTests.Mocking
             var actual = _installerHelper.DownloadInstaller("any string...", "any string ..");
 
             // assert
-            Assert.That(actual, Is.EqualTo(false));
+            Assert.That(actual, Is.False);
         }
     }
 }
