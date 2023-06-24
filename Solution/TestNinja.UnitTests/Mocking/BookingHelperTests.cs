@@ -7,7 +7,7 @@ namespace TestNinja.UnitTests.Mocking
     public class BookingHelperTests
     {
         private Booking _booking = null!;
-        private Mock<IBookingRepository> _bookingRepositoryMock;
+        private Mock<IBookingRepository> _bookingRepositoryMock = null!;
 
         [SetUp]
         public void SetUp()
@@ -82,6 +82,47 @@ namespace TestNinja.UnitTests.Mocking
         [Test]
         public void OverlappingBookingsExist_NoBookingWithOverlap_ReturnsEmptyStr()
         {
+            _booking.Status = "Active";
+            _booking.ArrivalDate = new DateTime(2000, 1, 5);
+            _booking.DepartureDate = new DateTime(2000, 1, 8);
+            var bookings = new List<Booking>
+            {
+                new()
+                {
+                    Id = _booking.Id,
+                    Status = "Active",
+                    ArrivalDate = _booking.DepartureDate,
+                    DepartureDate = _booking.ArrivalDate,
+                    Reference = "Ref1"
+                },
+                new()
+                {
+                    Id = _booking.Id,
+                    Status = "Active",
+                    ArrivalDate = _booking.DepartureDate,
+                    DepartureDate = _booking.ArrivalDate,
+                    Reference = "Ref2"
+                },
+                new()
+                {
+                    Id = _booking.Id,
+                    Status = "Active",
+                    ArrivalDate = _booking.DepartureDate,
+                    DepartureDate = _booking.ArrivalDate,
+                    Reference = "Ref3"
+                },
+            };
+            var queryable = bookings.AsQueryable();
+            _bookingRepositoryMock.Setup(x => x.FindActiveBookings(_booking.Id))
+                .Returns(queryable);
+
+            // act
+            var actual = BookingHelper.OverlappingBookingsExist(_booking,
+                _bookingRepositoryMock.Object);
+
+            // assert
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual, Is.EqualTo(string.Empty));    // none of the bookings overlap, all have same departure and arrival dates
         }
     }
 }
