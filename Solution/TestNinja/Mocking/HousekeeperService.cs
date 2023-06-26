@@ -1,5 +1,3 @@
-using System;
-
 namespace TestNinja.Mocking
 {
     public class HousekeeperService
