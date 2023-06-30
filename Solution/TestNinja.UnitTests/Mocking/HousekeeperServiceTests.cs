@@ -20,6 +20,8 @@ namespace TestNinja.UnitTests.Mocking
 
         private readonly string _statementFileName = "statementFilename.pdf";
 
+        private readonly DateTime _testDateTime = DateTime.Today;
+
 
         [SetUp]
         public void SetUp()
@@ -31,7 +33,7 @@ namespace TestNinja.UnitTests.Mocking
             _statementGeneratorMock = new Mock<IStatementGenerator>();
             _statementGeneratorMock.Setup(x => x.SaveStatement(_houseKeepers.First().Oid,
                 _houseKeepers.First().FullName,
-                DateTime.Today)).Returns(_statementFileName);
+                _testDateTime)).Returns(_statementFileName);
 
             _emailSenderMock = new Mock<IEmailSender>();
             _messageBoxMock = new Mock<IXtraMessageBox>();
@@ -45,12 +47,12 @@ namespace TestNinja.UnitTests.Mocking
                 _statementGeneratorMock.Object, _emailSenderMock.Object, _messageBoxMock.Object);
 
             // act
-            _housekeeperService.SendStatementEmails(DateTime.Today);
+            _housekeeperService.SendStatementEmails(_testDateTime);
 
             // assert
             _statementGeneratorMock.Verify(x =>
                 x.SaveStatement(_houseKeepers.First().Oid, _houseKeepers.First().FullName,
-                    DateTime.Today));
+                    _testDateTime));
         }
 
 
@@ -58,12 +60,12 @@ namespace TestNinja.UnitTests.Mocking
         public void SendStatementEmails_WhenCalled_EmailFileMethodInteracted()
         {
             // arrange
-            var fileName = $"Sandpiper Statement {DateTime.Today:yyyy-MM} {_houseKeepers.First().FullName}";
+            var fileName = $"Sandpiper Statement {_testDateTime:yyyy-MM} {_houseKeepers.First().FullName}";
             _housekeeperService = new HousekeeperService(_unitOfWorkMock.Object,
                 _statementGeneratorMock.Object, _emailSenderMock.Object, _messageBoxMock.Object);
 
             // act
-            _housekeeperService.SendStatementEmails(DateTime.Today);
+            _housekeeperService.SendStatementEmails(_testDateTime);
 
             // assert
             _emailSenderMock.Verify(x => x.EmailFile(_houseKeepers.First().Email,
