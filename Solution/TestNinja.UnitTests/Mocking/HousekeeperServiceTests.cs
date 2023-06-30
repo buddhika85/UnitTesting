@@ -55,6 +55,52 @@ namespace TestNinja.UnitTests.Mocking
                     _testDateTime));
         }
 
+        [Test]
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        public void SendStatementEmails_WhenEmailNullOrEmptyOrWhiteSpace_SaveStatementMethodNotInteracted(string? email)
+        {
+            // arrange
+            _houseKeepers.First().Email = email;
+            _housekeeperService = new HousekeeperService(_unitOfWorkMock.Object,
+                _statementGeneratorMock.Object, _emailSenderMock.Object, _messageBoxMock.Object);
+
+            // act
+            _housekeeperService.SendStatementEmails(_testDateTime);
+
+            // assert
+            _statementGeneratorMock.Verify(x =>
+                x.SaveStatement(_houseKeepers.First().Oid, _houseKeepers.First().FullName,
+                    _testDateTime), Times.Never);
+        }
+
+        [Test]
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        public void SendStatementEmails_WhenFileNameNullOrEmptyOrWhiteSpace_EmailFileMethodInteracted(string? fileName)
+        {
+            // arrange
+            _statementGeneratorMock.Setup(x => x.SaveStatement(It.IsAny<int>(),
+                It.IsAny<string>(),
+                It.IsAny<DateTime>())).Returns(fileName);
+            _housekeeperService = new HousekeeperService(_unitOfWorkMock.Object,
+                _statementGeneratorMock.Object, _emailSenderMock.Object, _messageBoxMock.Object);
+
+            // act
+            _housekeeperService.SendStatementEmails(_testDateTime);
+
+            // assert
+            _emailSenderMock.Verify(x => x.EmailFile(
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<string>()),
+                Times.Never);
+
+        }
+
 
         [Test]
         public void SendStatementEmails_WhenCalled_EmailFileMethodInteracted()
