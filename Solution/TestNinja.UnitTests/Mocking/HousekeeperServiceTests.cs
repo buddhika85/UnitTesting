@@ -13,6 +13,7 @@ namespace TestNinja.UnitTests.Mocking
         private Mock<IEmailSender> _emailSenderMock = null!;
         private Mock<IXtraMessageBox> _messageBoxMock = null!;
 
+
         private readonly List<Housekeeper> _houseKeepers = new()
         {
             new() { Email = "a@a.com", Oid = 1, FullName = "a", StatementEmailBody = "Statement Email Body" },
@@ -119,6 +120,27 @@ namespace TestNinja.UnitTests.Mocking
                 _statementFileName,
                 fileName));
 
+        }
+
+        [Test]
+        public void SendStatementEmails_WhenExceptionThrown_MessageBoxShown()
+        {
+            // arrange
+            _statementGeneratorMock.Setup(x => x.SaveStatement(It.IsAny<int>(),
+                It.IsAny<string>(),
+                It.IsAny<DateTime>())).Returns(_statementFileName);
+            _emailSenderMock.Setup(x => x.EmailFile(It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<string>())).Throws<Exception>();
+            _housekeeperService = new HousekeeperService(_unitOfWorkMock.Object,
+                _statementGeneratorMock.Object, _emailSenderMock.Object, _messageBoxMock.Object);
+
+            // act
+            _housekeeperService.SendStatementEmails(It.IsAny<DateTime>());
+
+            // assert
+            _messageBoxMock.Verify(x => x.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButtons.OK));
         }
     }
 }
